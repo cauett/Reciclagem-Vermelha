@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIXEIRA VERMELHA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        #video-container {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 10;
+        }
+        #video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #carousel {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: none; /* Começa oculto */
+        }
+        .carousel-image {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Vídeo de abertura -->
+    <div id="video-container">
+        <video id="intro-video" autoplay muted playsinline>
+            <source src="0.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Áudio de fundo -->
+    <audio id="background-audio" autoplay loop>
+        <source src="pkmn.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Carrossel de imagens -->
+    <div id="carousel">
+        <img src="1.png" class="carousel-image active">
+        <img src="2.png" class="carousel-image">
+        <img src="3.png" class="carousel-image">
+        <img src="4.png" class="carousel-image">
+        <img src="5.png" class="carousel-image">
+        <img src="6.png" class="carousel-image">
+        <img src="7.png" class="carousel-image">
+        <img src="8.png" class="carousel-image">
+        <img src="9.png" class="carousel-image">
+        <img src="10.png" class="carousel-image">
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const images = document.querySelectorAll('.carousel-image');
+        const videoContainer = document.getElementById('video-container');
+        const introVideo = document.getElementById('intro-video');
+        const carousel = document.getElementById('carousel');
+        const audio = document.getElementById('background-audio');
+
+        function nextImage() {
+            if (currentIndex < images.length - 1) { // Verifica se não está na última imagem
+                images[currentIndex].classList.remove('active'); // Remove a classe ativa
+                currentIndex++; // Avança para a próxima imagem
+                images[currentIndex].classList.add('active'); // Ativa a nova imagem
+            }
+        }
+
+        // Esconder o vídeo e mostrar a primeira imagem do carrossel no clique
+        introVideo.addEventListener('click', () => {
+            videoContainer.style.display = 'none'; // Esconde o vídeo
+            carousel.style.display = 'block'; // Exibe o carrossel
+        });
+
+        // Se o navegador bloquear a reprodução do áudio, inicia ao clicar
+        document.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play().catch(error => console.error('Erro ao reproduzir áudio:', error));
+            }
+        });
+
+        // Permitir avançar as imagens com clique no carrossel, mas para na última
+        carousel.addEventListener('click', nextImage);
+    </script>
+</body>
+</html>
