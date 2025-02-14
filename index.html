@@ -10,38 +10,35 @@
             padding: 0;
             box-sizing: border-box;
         }
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: black; /* Para evitar barras brancas */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            width: 100vw;
-            background-color: #fff;
-            overflow: hidden;
         }
-        #video-container {
+        #video-container, #carousel {
             position: absolute;
             width: 100vw;
             height: 100vh;
-            overflow: hidden;
-            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
         }
-        #video-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        #carousel {
-            position: relative;
+        #video-container video, .carousel-image {
             width: 100vw;
             height: 100vh;
+            object-fit: contain; /* Garante que nada seja cortado */
+            background-color: black; /* Para cobrir possíveis espaços vazios */
+        }
+        #carousel {
             display: none; /* Começa oculto */
         }
         .carousel-image {
             display: none;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
             position: absolute;
             top: 0;
             left: 0;
@@ -88,27 +85,27 @@
         const audio = document.getElementById('background-audio');
 
         function nextImage() {
-            if (currentIndex < images.length - 1) { // Verifica se não está na última imagem
-                images[currentIndex].classList.remove('active'); // Remove a classe ativa
-                currentIndex++; // Avança para a próxima imagem
-                images[currentIndex].classList.add('active'); // Ativa a nova imagem
+            if (currentIndex < images.length - 1) {
+                images[currentIndex].classList.remove('active');
+                currentIndex++;
+                images[currentIndex].classList.add('active');
             }
         }
 
-        // Esconder o vídeo e mostrar a primeira imagem do carrossel no clique
+        // Esconder o vídeo e mostrar o carrossel ao clicar nele
         introVideo.addEventListener('click', () => {
-            videoContainer.style.display = 'none'; // Esconde o vídeo
-            carousel.style.display = 'block'; // Exibe o carrossel
+            videoContainer.style.display = 'none';
+            carousel.style.display = 'flex'; // Usa flex para manter alinhado
         });
 
-        // Se o navegador bloquear a reprodução do áudio, inicia ao clicar
+        // Iniciar áudio ao clicar, caso o navegador bloqueie
         document.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play().catch(error => console.error('Erro ao reproduzir áudio:', error));
             }
         });
 
-        // Permitir avançar as imagens com clique no carrossel, mas para na última
+        // Avançar imagens com clique no carrossel
         carousel.addEventListener('click', nextImage);
     </script>
 </body>
